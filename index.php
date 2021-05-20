@@ -1,3 +1,0 @@
-<?php
-
-echo 'ty chuju';
