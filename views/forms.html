@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Zapisz Się</title>
+   <link rel="stylesheet" href="/styles/forms.css">
+</head>
+
+<body>
+   <form action="/register" method="POST">
+      <Label for="usernameInput">Nazwa użytkownika</Label>
+      <input type="text" name="username" required id="usernameInput">
+      <Label for="passwordInput">Hasło</Label>
+      <input type="password" name="password" required id="passwordInput">
+
+      <div id="submitButtons">
+         <button type="submit">Rejestruj</button>
+         <button type="submit" formaction="/login">Zaloguj</button>
+      </div>
+   </form>
+</body>
+
+</html>

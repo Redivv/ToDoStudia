@@ -1,16 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 $request = $_SERVER['REQUEST_URI'];
 
 switch ($request) {
    case '/':
-      require __DIR__ . '/views/index.html';
+      require __DIR__ . '/src/guards/anonGuard.php';
+      require __DIR__ . '/views/forms.html';
       break;
-   case '':
-      require __DIR__ . '/views/index.html';
+   case '/register':
+      require __DIR__ . '/src/guards/anonGuard.php';
+      require __DIR__ . '/src/register.php';
       break;
-   case '/about':
-      require __DIR__ . '/views/about.html';
+   case '/login':
+      require __DIR__ . '/src/guards/anonGuard.php';
+      require __DIR__ . '/src/login.php';
+      break;
+   case '/todo':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/views/todo.html';
+      break;
+   case '/logout':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/logout.php';
       break;
    default:
       http_response_code(404);

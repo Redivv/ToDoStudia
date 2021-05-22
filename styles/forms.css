@@ -1,0 +1,11 @@
+form{
+   max-width: 25%;
+}
+
+label{
+   display: block;
+}
+
+#submitButtons{
+   margin-top: 10px;
+}
