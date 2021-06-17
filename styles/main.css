@@ -1,0 +1,68 @@
+body{
+    overflow: hidden;
+    margin: 0;
+    font-size: 2vw;
+}
+output{
+    display: block;
+}
+
+.container > aside,main{
+    float: left;
+}
+
+.sidebar{
+    height: 100vh;
+    position: relative;
+    width: 29%;
+    border-right: 2px solid;
+    padding-bottom: 3vh;
+}
+
+.sidebar *{
+    text-align: center;
+}
+
+.sidebar header{
+    border-bottom: 2px solid;
+    padding: 2% 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sidebar output{
+    font-size: .8em;
+    max-height: 84vh;
+    overflow-y: auto;
+}
+
+.sidebar output .tableLink{
+    padding: 3% 0;
+    border-bottom: 1px dotted;
+}
+
+.sidebar output .tableLink:hover{
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+.sidebar footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 2px solid;
+    padding: 2% 0;
+    margin-bottom: 3.4vh;
+}
+
+.sidebar footer:hover{
+    background-color: crimson;
+    color: white;
+    border-color: black;
+    cursor: pointer;
+}
+
+main{
+    width: 70.8%;
+    height: 100vh;
+}
