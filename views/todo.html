@@ -2,20 +2,21 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="/styles/main.css">
-   <title>Tablice</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/spinner.css">
+    <title>Tablice</title>
 </head>
 
 <body>
-   <div class="container">
-      <aside class="sidebar">
-         <header>
-            Tablice
-         </header>
-         <output>
+    <div class="container">
+        <aside class="sidebar">
+            <header>
+                Tablice
+            </header>
+            <output>
             <div class="tableLink">
                Tablica 1
             </div>
@@ -53,14 +54,73 @@
                Tablica 2
             </div>
          </output>
-         <footer>
-            Wyloguj
-         </footer>
-      </aside>
-      <main>
-         Tablica
-      </main>
-   </div>
+            <footer>
+                <div>Dodaj Tablicę</div>
+                <div>Wyloguj</div>
+            </footer>
+        </aside>
+        <main>
+            <div class="tableColumn">
+                <header>Nowe</header>
+                <output>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+               <article>
+                  <div class="taskTitle">Tytuł Zadania</div>
+                  <div class="taskLevel">13</div>
+               </article>
+            </output>
+                <footer>
+                    Dodaj Zadanie
+                </footer>
+            </div>
+            <div class="tableColumn">
+                <header>W Trakcie</header>
+                <output>
+                   <div class="lds-circle"><div></div></div>
+                </output>
+                <footer>
+                    Dodaj Zadanie
+                </footer>
+            </div>
+            <div class="tableColumn">
+                <header>Testowane</header>
+                <output></output>
+                <footer>
+                    Dodaj Zadanie
+                </footer>
+            </div>
+            <div class="tableColumn">
+                <header>Gotowe</header>
+                <output></output>
+                <footer>
+                    Dodaj Zadanie
+                </footer>
+            </div>
+        </main>
+    </div>
 </body>
 
 </html>

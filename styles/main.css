@@ -1,68 +1,132 @@
-body{
+body {
     overflow: hidden;
     margin: 0;
-    font-size: 2vw;
+    font-size: 1.8vw;
 }
-output{
+
+output {
     display: block;
 }
 
-.container > aside,main{
+.container>aside,
+main {
     float: left;
 }
 
-.sidebar{
+.sidebar {
     height: 100vh;
     position: relative;
-    width: 29%;
+    width: 20%;
     border-right: 2px solid;
     padding-bottom: 3vh;
 }
 
-.sidebar *{
+.sidebar * {
     text-align: center;
 }
 
-.sidebar header{
+.sidebar header {
     border-bottom: 2px solid;
-    padding: 2% 0;
+    padding: 2.5% 0;
     font-weight: bold;
     letter-spacing: 1px;
 }
 
-.sidebar output{
-    font-size: .8em;
-    max-height: 84vh;
+.sidebar output {
+    font-size: .9em;
+    max-height: 78vh;
     overflow-y: auto;
 }
 
-.sidebar output .tableLink{
+.sidebar output .tableLink {
     padding: 3% 0;
+    letter-spacing: 1px;
     border-bottom: 1px dotted;
 }
 
-.sidebar output .tableLink:hover{
+.sidebar output .tableLink:hover {
     background-color: #ddd;
     cursor: pointer;
 }
 
-.sidebar footer{
+.sidebar footer {
     position: absolute;
     bottom: 0;
     width: 100%;
     border-top: 2px solid;
-    padding: 2% 0;
     margin-bottom: 3.4vh;
 }
 
-.sidebar footer:hover{
+.sidebar footer div {
+    padding: 5px;
+}
+
+.sidebar footer div:hover {
+    cursor: pointer;
     background-color: crimson;
     color: white;
     border-color: black;
-    cursor: pointer;
 }
 
-main{
-    width: 70.8%;
+.sidebar footer div:first-child {
+    border-bottom: 1px solid;
+}
+
+main {
+    width: 79.805%;
     height: 100vh;
+}
+
+.tableColumn {
+    float: left;
+    text-align: center;
+    height: 100vh;
+    border: 1px solid;
+    border-top: 0;
+    width: 24.72%;
+    position: relative;
+}
+
+.tableColumn header {
+    border-bottom: 2px solid;
+    padding: 5px 2px;
+}
+
+.tableColumn output {
+    padding: 10px 20px;
+    overflow-y: auto;
+    height: 79.5vh;
+}
+
+.tableColumn footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 2px solid;
+    padding: 10px 0;
+}
+
+.tableColumn article {
+    text-align: left;
+    font-size: .8em;
+    border: 2px solid;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.taskTitle {
+    margin-bottom: 5px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.taskLevel {
+    margin-top: 5px;
+}
+
+.tableColumn footer:hover {
+    cursor: pointer;
+    background-color: crimson;
+    color: white;
+    border-color: black;
 }
