@@ -25,6 +25,13 @@ switch ($request) {
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/logout.php';
       break;
+   case '/addTable':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/addTable.php';
+      break;
+   case '/info':
+      echo phpinfo();
+      break;
    default:
       http_response_code(404);
       require __DIR__ . '/views/404.html';

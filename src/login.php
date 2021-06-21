@@ -13,6 +13,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
    }
    if (password_verify($_POST['password'], $user['password'])) {
       $_SESSION['AUTH'] = $_POST['username'];
+      $_SESSION['user_id'] = $user['id'];
       header("Location: /todo");
       exit;
    }
