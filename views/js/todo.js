@@ -4,26 +4,27 @@ document.getElementById('addTableButton').addEventListener("click", (e) => {
         return;
     }
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-            if (xmlhttp.status == 200) {
-                alert('lel');
-            }
-            else if (xmlhttp.status == 400) {
-                alert('There was an error 400');
-            }
-            else {
-                alert('something else other than 200 was returned');
-                console.log(JSON.parse(xmlhttp.response));
-            }
-        }
-    };
-
     let jsonData = { tableName: newTableName };
     let formattedJsonData = JSON.stringify(jsonData);
 
-    xmlhttp.open("POST", "/addTable", true);
-    xmlhttp.send(formattedJsonData);
-
+    fetch("/addTable", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: formattedJsonData
+    }).then(response => {
+        if (response.status == 200) {
+            alert('Working');
+            response.json().then(data => {
+                console.log(data);
+            });
+        }
+        else if (response.status == 400) {
+            alert('There was an error 400');
+        }
+        else {
+            alert('something else other than 200 was returned');
+        }
+    })
 });
