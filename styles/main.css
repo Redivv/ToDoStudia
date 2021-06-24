@@ -38,6 +38,11 @@ main {
     overflow-y: auto;
 }
 
+.sidebar output .lds-circle>div{
+    width: 30px;
+    height: 30px;
+}
+
 .sidebar output .tableLink {
     padding: 3% 0;
     letter-spacing: 1px;

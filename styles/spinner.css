@@ -9,7 +9,7 @@
     height: 64px;
     margin: 8px;
     border-radius: 50%;
-    background: rgb(255, 0, 0);
+    background: rgb(20, 0, 77);
     animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 

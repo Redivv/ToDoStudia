@@ -15,7 +15,7 @@ $stmt->execute([
     $_SESSION['user_id']
 ]);
 
-http_response_code(200);
+http_response_code(201);
 header('Content-type: application/json');
-echo json_encode(['status' => 'gitarka']);
+echo json_encode(['newTableName' => $data['tableName']]);
 exit;

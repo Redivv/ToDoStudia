@@ -25,6 +25,10 @@ switch ($request) {
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/logout.php';
       break;
+   case '/getTables':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/getTables.php';
+      break;
    case '/addTable':
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/addTable.php';
