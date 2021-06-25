@@ -1,4 +1,4 @@
-import {getTableData, addNewTable} from './functions.js';
+import { getTablesData, addNewTable } from './functions.js';
 
-getTableData();
+getTablesData();
 document.getElementById('addTableButton').addEventListener("click", addNewTable);

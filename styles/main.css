@@ -82,10 +82,31 @@ main {
     height: 100vh;
 }
 
+main>header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 7vh;
+    border-bottom: 2px solid;
+    font-size: 1.4em;
+}
+
+main>.initialInformation{
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 25%;
+}
+
+main>.lds-circle{
+    display: flex;
+    justify-content: center;
+}
+
 .tableColumn {
     float: left;
     text-align: center;
-    height: 100vh;
+    height: 92.5vh;
     border: 1px solid;
     border-top: 0;
     width: 24.72%;
@@ -100,7 +121,7 @@ main {
 .tableColumn output {
     padding: 10px 20px;
     overflow-y: auto;
-    height: 79.5vh;
+    height: 73vh;
 }
 
 .tableColumn footer {

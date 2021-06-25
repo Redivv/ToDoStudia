@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 $request = $_SERVER['REQUEST_URI'];
+$pathWithoutParameters = strstr($request, '?', true);
+$request = $pathWithoutParameters ? $pathWithoutParameters : $request ;
 
 switch ($request) {
    case '/':
@@ -28,6 +30,10 @@ switch ($request) {
    case '/getTables':
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/getTables.php';
+      break;
+   case '/getTable':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/getTable.php';
       break;
    case '/addTable':
       require __DIR__ . '/src/guards/authGuard.php';
