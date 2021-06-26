@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $request = $_SERVER['REQUEST_URI'];
 $pathWithoutParameters = strstr($request, '?', true);
-$request = $pathWithoutParameters ? $pathWithoutParameters : $request ;
+$request = $pathWithoutParameters ? $pathWithoutParameters : $request;
 
 switch ($request) {
    case '/':
@@ -38,6 +38,14 @@ switch ($request) {
    case '/addTable':
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/addTable.php';
+      break;
+   case '/deleteTable':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/deleteTable.php';
+      break;
+   case '/editTable':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/editTable.php';
       break;
    case '/info':
       echo phpinfo();

@@ -54,6 +54,11 @@ main {
     cursor: pointer;
 }
 
+.sidebar output .tableLink.activeTable {
+    background-color: #ddd;
+    cursor: pointer;
+}
+
 .sidebar footer {
     position: absolute;
     bottom: 0;
@@ -88,7 +93,25 @@ main>header{
     justify-content: center;
     height: 7vh;
     border-bottom: 2px solid;
+    padding: 0 2%;
+}
+
+header>#tableName{
     font-size: 1.4em;
+}
+
+header>#tableEditButton{
+    margin-right: auto;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+header>#tableDeleteButton{
+    margin-left: auto;
+    color: red;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 main>.initialInformation{

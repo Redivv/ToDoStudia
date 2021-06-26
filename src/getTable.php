@@ -2,7 +2,7 @@
 
 if ($_GET['tableId']) {
     $db = new PDO("mysql:dbname=todo", 'todo', 'admin');
-    $stmt = $db->prepare("SELECT name FROM tables WHERE id = ?");
+    $stmt = $db->prepare("SELECT id, name FROM tables WHERE id = ?");
     $stmt->execute([
         $_GET['tableId']
     ]);

@@ -17,9 +17,12 @@ function getTablesData() {
                 divs.forEach(
                     el => el.addEventListener(
                         'click',
-                        event => getTableData(
-                            event.target.getAttribute('data-tableId')
-                        )
+                        event => {
+                            let activeLinks = document.querySelectorAll('.tableLink.activeTable');
+                            activeLinks.forEach(link => link.className = "tableLink");
+                            event.target.className += " activeTable";
+                            getTableData(event.target.getAttribute('data-tableId'));
+                        }
                     )
                 );
             });
@@ -39,7 +42,9 @@ function getTableData(tableId) {
                 if (data) {
                     let tableHTML = `
                     <header>
-                        ${data.name}
+                        <span id="tableEditButton" data-tableid="${data.id}">Edytuj</span>
+                        <span id="tableName">${data.name}</span>
+                        <span id="tableDeleteButton" data-tableid="${data.id}">Usuń</span>
                     </header>
                     <div id="todoTable">
                         <div class="tableColumn">
@@ -106,6 +111,18 @@ function getTableData(tableId) {
                     </div>
                     `;
                     document.getElementById('tableContainer').innerHTML = tableHTML;
+                    document.getElementById('tableDeleteButton').addEventListener(
+                        'click',
+                        event => deleteTable(
+                            event.target.getAttribute('data-tableId')
+                        )
+                    )
+                    document.getElementById('tableEditButton').addEventListener(
+                        'click',
+                        event => editTable(
+                            event.target.getAttribute('data-tableId'),
+                        )
+                    )
                 } else {
                     alert("Błędne Dane");
                 }
@@ -155,6 +172,48 @@ function addNewTable() {
             alert('Wystąpił Błąd');
         }
     })
+}
+
+function deleteTable(tableId) {
+    let isConfirmed = confirm("Czy na pewno chcesz usunąć tabelę wraz zawartością?");
+
+    if (isConfirmed) {
+        fetch(`/deleteTable?tableId=${tableId}`, {
+            method: "POST",
+        }).then(response => {
+            if (response.status === 204) {
+                document.getElementById('tableContainer').innerHTML = `
+                <div class="initialInformation">
+                    Wybierz lub dodaj tablicę
+                </div>`.trim();
+                document.querySelector(".tableLink.activeTable").remove();
+            } else {
+                alert('Wystąpił Błąd');
+            }
+        })
+    }
+}
+
+function editTable(tableId) {
+    let newTableName = prompt("Podaj nową nazwę tabeli.").trim();
+    if (newTableName !== "") {
+        fetch(`/editTable?tableId=${tableId}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTableName)
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(data => {
+                    document.getElementById("tableName").innerHTML = data.newName;
+                    document.querySelector(`.tableLink[data-tableid="${data.id}"]`).innerHTML = data.newName;
+                });
+            } else {
+                alert('Wystąpił Błąd');
+            }
+        })
+    }
 }
 
 export { getTablesData, addNewTable };
