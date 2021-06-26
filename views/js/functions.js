@@ -18,8 +18,7 @@ function getTablesData() {
                     el => el.addEventListener(
                         'click',
                         event => {
-                            let activeLinks = document.querySelectorAll('.tableLink.activeTable');
-                            activeLinks.forEach(link => link.className = "tableLink");
+                            makeAllTableLinksNotActive();
                             event.target.className += " activeTable";
                             getTableData(event.target.getAttribute('data-tableId'));
                         }
@@ -155,7 +154,7 @@ function addNewTable() {
                 newTableElement.appendChild(
                     document.createTextNode(data.name)
                 );
-                newTableElement.setAttribute("class", "tableLink");
+                newTableElement.setAttribute("class", "tableLink activeTable");
                 newTableElement.setAttribute("data-tableid", data.id);
                 newTableElement.addEventListener(
                     'click',
@@ -163,6 +162,7 @@ function addNewTable() {
                         event.target.getAttribute('data-tableId')
                     )
                 )
+                makeAllTableLinksNotActive();
 
                 document.getElementById('tableLinks').appendChild(newTableElement);
                 getTableData(data.id);
@@ -214,6 +214,11 @@ function editTable(tableId) {
             }
         })
     }
+}
+
+function makeAllTableLinksNotActive() {
+    let activeLinks = document.querySelectorAll('.tableLink.activeTable');
+    activeLinks.forEach(link => link.className = "tableLink");
 }
 
 export { getTablesData, addNewTable };
