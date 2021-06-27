@@ -13,8 +13,7 @@ function getTablesData() {
                 <div class="initialInformation">
                     Wybierz lub dodaj tablicę
                 </div>`.trim();
-                const divs = document.querySelectorAll('.tableLink');
-                divs.forEach(
+                document.querySelectorAll('.tableLink').forEach(
                     el => el.addEventListener(
                         'click',
                         event => {
@@ -41,71 +40,37 @@ function getTableData(tableId) {
                 if (data) {
                     let tableHTML = `
                     <header>
-                        <span id="tableEditButton" data-tableid="${data.id}">Edytuj</span>
-                        <span id="tableName">${data.name}</span>
-                        <span id="tableDeleteButton" data-tableid="${data.id}">Usuń</span>
+                        <span id="tableEditButton" data-tableid="${data.tableData.id}">Edytuj</span>
+                        <span id="tableName">${data.tableData.name}</span>
+                        <span id="tableDeleteButton" data-tableid="${data.tableData.id}">Usuń</span>
                     </header>
                     <div id="todoTable">
-                        <div class="tableColumn">
+                        <div id="column1" class="tableColumn">
                             <header>Nowe</header>
                             <output>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
-                                <article>
-                                    <div class="taskTitle">Tytuł Zadania</div>
-                                    <div class="taskLevel">13</div>
-                                </article>
+                                ${generateTasksHtml(data.tasks['1'])}
                             </output>
-                            <footer>
+                            <footer class="addTaskButton" data-tableid="${data.tableData.id}" data-columnnumber="1">
                                 Dodaj Zadanie
                             </footer>
                         </div>
-                        <div class="tableColumn">
+                        <div id="column2" class="tableColumn">
                             <header>W Trakcie</header>
                             <output>
-                                <div class="lds-circle">
-                                    <div></div>
-                                </div>
+                                ${generateTasksHtml(data.tasks['2'])}
                             </output>
-                            <footer>
-                                Dodaj Zadanie
-                            </footer>
                         </div>
-                        <div class="tableColumn">
+                        <div id="column3" class="tableColumn">
                             <header>Testowane</header>
-                            <output></output>
-                            <footer>
-                                Dodaj Zadanie
-                            </footer>
+                            <output>
+                                ${generateTasksHtml(data.tasks['3'])}
+                            </output>
                         </div>
-                        <div class="tableColumn">
+                        <div id="column4" class="tableColumn">
                             <header>Gotowe</header>
-                            <output></output>
-                            <footer>
-                                Dodaj Zadanie
-                            </footer>
+                            <output>
+                                ${generateTasksHtml(data.tasks['4'])}
+                            </output>
                         </div>
                     </div>
                     `;
@@ -115,13 +80,16 @@ function getTableData(tableId) {
                         event => deleteTable(
                             event.target.getAttribute('data-tableId')
                         )
-                    )
+                    );
                     document.getElementById('tableEditButton').addEventListener(
                         'click',
                         event => editTable(
-                            event.target.getAttribute('data-tableId'),
+                            event.target.getAttribute('data-tableId')
                         )
-                    )
+                    );
+                    document.querySelector(".addTaskButton").addEventListener("click", event => {
+                        addNewTask(event.target.getAttribute("data-tableid"))
+                    });
                 } else {
                     alert("Błędne Dane");
                 }
@@ -130,6 +98,19 @@ function getTableData(tableId) {
             alert('Wystąpił Bład');
         }
     });
+}
+
+function generateTasksHtml(tasks) {
+    let tasksHTML = "";
+    tasks.forEach(task => {
+        tasksHTML += `
+            <article>
+                <div class="taskTitle">${task.title}</div>
+                <div class="taskLevel">0</div>
+            </article>
+            `;
+    });
+    return tasksHTML;
 }
 
 function addNewTable() {
@@ -166,7 +147,52 @@ function addNewTable() {
 
                 document.getElementById('tableLinks').appendChild(newTableElement);
                 getTableData(data.id);
+                z
+            });
+        } else {
+            alert('Wystąpił Błąd');
+        }
+    })
+}
 
+function addNewTask(tableId) {
+    let newTaskName = prompt("Podaj tytuł zadania").trim();
+    if (newTaskName === "") {
+        return;
+    }
+
+    let jsonData = {
+        taskName: newTaskName,
+        tableId: tableId,
+    };
+    let formattedJsonData = JSON.stringify(jsonData);
+
+    fetch("/addTask", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: formattedJsonData
+    }).then(response => {
+        if (response.status === 201) {
+            response.json().then(data => {
+                let newTaskElement = document.createElement("article");
+
+                let newTaskTitleElement = document.createElement("div");
+                newTaskTitleElement.setAttribute("class", "taskTitle")
+                newTaskTitleElement.appendChild(
+                    document.createTextNode(data.title)
+                )
+                newTaskElement.appendChild(newTaskTitleElement);
+
+                let newTaskLevelElement = document.createElement("div");
+                newTaskLevelElement.setAttribute("class", "taskLevel")
+                newTaskLevelElement.appendChild(
+                    document.createTextNode("0")
+                )
+                newTaskElement.appendChild(newTaskLevelElement);
+
+                document.querySelector("#column1 output").appendChild(newTaskElement);
             });
         } else {
             alert('Wystąpił Błąd');
@@ -217,8 +243,7 @@ function editTable(tableId) {
 }
 
 function makeAllTableLinksNotActive() {
-    let activeLinks = document.querySelectorAll('.tableLink.activeTable');
-    activeLinks.forEach(link => link.className = "tableLink");
+    document.querySelectorAll('.tableLink.activeTable').forEach(link => link.className = "tableLink");
 }
 
 export { getTablesData, addNewTable };

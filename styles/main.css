@@ -144,6 +144,10 @@ main>.lds-circle{
 .tableColumn output {
     padding: 10px 20px;
     overflow-y: auto;
+    height: 81.6vh;
+}
+
+#column1 output{
     height: 73vh;
 }
 
