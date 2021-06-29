@@ -2,31 +2,31 @@ function getTablesData() {
     fetch("/getTables", {
         method: "GET"
     }).then(response => {
-        if (response.status === 200) {
-            response.json().then(data => {
-                let tablesHTML = "";
-                data.forEach(tableData => {
-                    tablesHTML += `<div class='tableLink' data-tableid='${tableData.id}'>${tableData.name}</div>`;
-                });
-                document.getElementById('tableLinks').innerHTML = tablesHTML;
-                document.getElementById('tableContainer').innerHTML = `
+        if (response.status !== 200) {
+            alert("Wystąpił Bład");
+            return;
+        }
+        response.json().then(data => {
+            let tablesHTML = "";
+            data.forEach(tableData => {
+                tablesHTML += `<div class='tableLink' data-tableid='${tableData.id}'>${tableData.name}</div>`;
+            });
+            document.getElementById('tableLinks').innerHTML = tablesHTML;
+            document.getElementById('tableContainer').innerHTML = `
                 <div class="initialInformation">
                     Wybierz lub dodaj tablicę
                 </div>`.trim();
-                document.querySelectorAll('.tableLink').forEach(
-                    el => el.addEventListener(
-                        'click',
-                        event => {
-                            makeAllTableLinksNotActive();
-                            event.target.className += " activeTable";
-                            getTableData(event.target.getAttribute('data-tableId'));
-                        }
-                    )
-                );
-            });
-        } else {
-            alert('Wystąpił Bład');
-        }
+            document.querySelectorAll('.tableLink').forEach(
+                el => el.addEventListener(
+                    'click',
+                    event => {
+                        makeAllTableLinksNotActive();
+                        event.target.className += " activeTable";
+                        getTableData(event.target.getAttribute('data-tableId'));
+                    }
+                )
+            );
+        });
     });
 }
 
@@ -35,10 +35,16 @@ function getTableData(tableId) {
     fetch(`/getTable?tableId=${tableId}`, {
         method: "GET"
     }).then(response => {
-        if (response.status === 200) {
-            response.json().then(data => {
-                if (data) {
-                    let tableHTML = `
+        if (response.status !== 200) {
+            alert("Wystąpił bład");
+            return;
+        }
+        response.json().then(data => {
+            if (!data) {
+                alert("Błędne Dane");
+                return;
+            }
+            let tableHTML = `
                     <header>
                         <span id="tableEditButton" data-tableid="${data.tableData.id}">Edytuj</span>
                         <span id="tableName">${data.tableData.name}</span>
@@ -74,29 +80,33 @@ function getTableData(tableId) {
                         </div>
                     </div>
                     `;
-                    document.getElementById('tableContainer').innerHTML = tableHTML;
-                    document.getElementById('tableDeleteButton').addEventListener(
-                        'click',
-                        event => deleteTable(
-                            event.target.getAttribute('data-tableId')
-                        )
-                    );
-                    document.getElementById('tableEditButton').addEventListener(
-                        'click',
-                        event => editTable(
-                            event.target.getAttribute('data-tableId')
-                        )
-                    );
-                    document.querySelector(".addTaskButton").addEventListener("click", event => {
-                        addNewTask(event.target.getAttribute("data-tableid"))
-                    });
-                } else {
-                    alert("Błędne Dane");
-                }
+            document.getElementById('tableContainer').innerHTML = tableHTML;
+            document.getElementById('tableDeleteButton').addEventListener(
+                'click',
+                event => deleteTable(
+                    event.target.getAttribute('data-tableId')
+                )
+            );
+            document.getElementById('tableEditButton').addEventListener(
+                'click',
+                event => editTable(
+                    event.target.getAttribute('data-tableId')
+                )
+            );
+            document.querySelector(".addTaskButton").addEventListener("click", event => {
+                addNewTask(event.target.getAttribute("data-tableid"))
             });
-        } else {
-            alert('Wystąpił Bład');
-        }
+            document.querySelectorAll(".taskTitle").forEach(element => {
+                element.addEventListener("click", event => {
+                    editTaskTitle(event.target.getAttribute('data-taskid'));
+                });
+            });
+            document.querySelectorAll(".taskLevel").forEach(element => {
+                element.addEventListener("click", event => {
+                    editTaskLevel(event.target.getAttribute('data-taskid'));
+                });
+            });
+        });
     });
 }
 
@@ -105,12 +115,60 @@ function generateTasksHtml(tasks) {
     tasks.forEach(task => {
         tasksHTML += `
             <article>
-                <div class="taskTitle">${task.title}</div>
-                <div class="taskLevel">0</div>
+                <div class="taskTitle" data-taskid="${task.id}">${task.title}</div>
+                <div class="taskLevel" data-taskid="${task.id}">${task.level}</div>
             </article>
             `;
     });
     return tasksHTML;
+}
+
+function editTaskTitle(taskId) {
+    let newTaskTitle = prompt("Podaj nowy tytuł zadania.").trim();
+    if (newTaskTitle !== "") {
+        return;
+    }
+    fetch(`/editTaskName?taskId=${taskId}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTaskTitle)
+    }).then(response => {
+        if (response.status !== 200) {
+            alert("Wystąpił Błąd");
+            return;
+        }
+        response.json().then(data => {
+            document.querySelector(`.taskTitle[data-taskid="${data.id}"]`).innerHTML = data.newName;
+        });
+    })
+}
+
+function editTaskLevel(taskId) {
+    let newTaskLevel = prompt("Podaj nowy number poziomu trudności zadania.").trim();
+    if (isNaN(newTaskLevel)) {
+        alert("Błędny numer");
+        return;
+    }
+    if (newTaskLevel === "") {
+        return;
+    }
+    fetch(`/editTaskLevel?taskId=${taskId}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTaskLevel)
+    }).then(response => {
+        if (response.status !== 200) {
+            alert("Wystąpił Błąd");
+            return;
+        }
+        response.json().then(data => {
+            document.querySelector(`.taskLevel[data-taskid="${data.id}"]`).innerHTML = data.newLevel;
+        });
+    })
 }
 
 function addNewTable() {
@@ -147,7 +205,6 @@ function addNewTable() {
 
                 document.getElementById('tableLinks').appendChild(newTableElement);
                 getTableData(data.id);
-                z
             });
         } else {
             alert('Wystąpił Błąd');
@@ -174,29 +231,29 @@ function addNewTask(tableId) {
         },
         body: formattedJsonData
     }).then(response => {
-        if (response.status === 201) {
-            response.json().then(data => {
-                let newTaskElement = document.createElement("article");
-
-                let newTaskTitleElement = document.createElement("div");
-                newTaskTitleElement.setAttribute("class", "taskTitle")
-                newTaskTitleElement.appendChild(
-                    document.createTextNode(data.title)
-                )
-                newTaskElement.appendChild(newTaskTitleElement);
-
-                let newTaskLevelElement = document.createElement("div");
-                newTaskLevelElement.setAttribute("class", "taskLevel")
-                newTaskLevelElement.appendChild(
-                    document.createTextNode("0")
-                )
-                newTaskElement.appendChild(newTaskLevelElement);
-
-                document.querySelector("#column1 output").appendChild(newTaskElement);
-            });
-        } else {
-            alert('Wystąpił Błąd');
+        if (response.status !== 201) {
+            alert("Wystąpił Błąd");
+            return;
         }
+        response.json().then(data => {
+            let newTaskElement = document.createElement("article");
+
+            let newTaskTitleElement = document.createElement("div");
+            newTaskTitleElement.setAttribute("class", "taskTitle")
+            newTaskTitleElement.appendChild(
+                document.createTextNode(data.title)
+            )
+            newTaskElement.appendChild(newTaskTitleElement);
+
+            let newTaskLevelElement = document.createElement("div");
+            newTaskLevelElement.setAttribute("class", "taskLevel")
+            newTaskLevelElement.appendChild(
+                document.createTextNode(data.level)
+            )
+            newTaskElement.appendChild(newTaskLevelElement);
+
+            document.querySelector("#column1 output").appendChild(newTaskElement);
+        });
     })
 }
 
@@ -207,39 +264,40 @@ function deleteTable(tableId) {
         fetch(`/deleteTable?tableId=${tableId}`, {
             method: "POST",
         }).then(response => {
-            if (response.status === 204) {
-                document.getElementById('tableContainer').innerHTML = `
+            if (response.status !== 204) {
+                alert("Wystąpił Błąd");
+                return;
+            }
+            document.getElementById('tableContainer').innerHTML = `
                 <div class="initialInformation">
                     Wybierz lub dodaj tablicę
                 </div>`.trim();
-                document.querySelector(".tableLink.activeTable").remove();
-            } else {
-                alert('Wystąpił Błąd');
-            }
+            document.querySelector(".tableLink.activeTable").remove();
         })
     }
 }
 
 function editTable(tableId) {
     let newTableName = prompt("Podaj nową nazwę tabeli.").trim();
-    if (newTableName !== "") {
-        fetch(`/editTable?tableId=${tableId}`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTableName)
-        }).then(response => {
-            if (response.status === 200) {
-                response.json().then(data => {
-                    document.getElementById("tableName").innerHTML = data.newName;
-                    document.querySelector(`.tableLink[data-tableid="${data.id}"]`).innerHTML = data.newName;
-                });
-            } else {
-                alert('Wystąpił Błąd');
-            }
-        })
+    if (newTableName === "") {
+        return;
     }
+    fetch(`/editTable?tableId=${tableId}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTableName)
+    }).then(response => {
+        if (response.status !== 200) {
+            alert("Wystąpił Błąd");
+            return;
+        }
+        response.json().then(data => {
+            document.getElementById("tableName").innerHTML = data.newName;
+            document.querySelector(`.tableLink[data-tableid="${data.id}"]`).innerHTML = data.newName;
+        });
+    })
 }
 
 function makeAllTableLinksNotActive() {

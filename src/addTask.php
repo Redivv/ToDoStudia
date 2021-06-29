@@ -22,7 +22,7 @@ $stmt->execute([
     $validatedTableId
 ]);
 
-$stmt = $db->prepare("SELECT id, title FROM tasks WHERE title = ? AND table_id = ? ORDER BY id DESC");
+$stmt = $db->prepare("SELECT id, title, level FROM tasks WHERE title = ? AND table_id = ? ORDER BY id DESC");
 $stmt->execute([
     $data['taskName'],
     $data['tableId']

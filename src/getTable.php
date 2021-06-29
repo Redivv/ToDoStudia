@@ -10,7 +10,7 @@ $stmt->execute([
     $_GET['tableId']
 ]);
 $tableData = $stmt->fetch(PDO::FETCH_ASSOC);
-$stmt = $db->prepare("SELECT id, title, column_number FROM tasks WHERE table_id = ? ORDER BY title");
+$stmt = $db->prepare("SELECT id, title, column_number, level FROM tasks WHERE table_id = ? ORDER BY title");
 $stmt->execute([
     $tableData['id']
 ]);

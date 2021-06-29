@@ -8,8 +8,7 @@ output {
     display: block;
 }
 
-.container>aside,
-main {
+.container>aside, main {
     float: left;
 }
 
@@ -38,7 +37,7 @@ main {
     overflow-y: auto;
 }
 
-.sidebar output .lds-circle>div{
+.sidebar output .lds-circle>div {
     width: 30px;
     height: 30px;
 }
@@ -87,7 +86,7 @@ main {
     height: 100vh;
 }
 
-main>header{
+main>header {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,32 +95,32 @@ main>header{
     padding: 0 2%;
 }
 
-header>#tableName{
+header>#tableName {
     font-size: 1.4em;
 }
 
-header>#tableEditButton{
+header>#tableEditButton {
     margin-right: auto;
     color: blue;
     text-decoration: underline;
     cursor: pointer;
 }
 
-header>#tableDeleteButton{
+header>#tableDeleteButton {
     margin-left: auto;
     color: red;
     text-decoration: underline;
     cursor: pointer;
 }
 
-main>.initialInformation{
+main>.initialInformation {
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
     margin-top: 25%;
 }
 
-main>.lds-circle{
+main>.lds-circle {
     display: flex;
     justify-content: center;
 }
@@ -147,7 +146,7 @@ main>.lds-circle{
     height: 81.6vh;
 }
 
-#column1 output{
+#column1 output {
     height: 73vh;
 }
 
@@ -171,10 +170,16 @@ main>.lds-circle{
     margin-bottom: 5px;
     font-weight: bold;
     letter-spacing: 1px;
+    cursor: pointer;
+    padding: 5px;
+    width: fit-content;
 }
 
 .taskLevel {
     margin-top: 5px;
+    cursor: pointer;
+    padding: 5px;
+    width: fit-content;
 }
 
 .tableColumn footer:hover {
