@@ -51,6 +51,10 @@ switch ($request) {
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/editTaskLevel.php';
       break;
+   case '/moveTask':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/moveTask.php';
+      break;
    case '/deleteTable':
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/deleteTable.php';

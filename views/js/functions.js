@@ -96,6 +96,15 @@ function getTableData(tableId) {
             document.querySelector(".addTaskButton").addEventListener("click", event => {
                 addNewTask(event.target.getAttribute("data-tableid"))
             });
+            document.querySelectorAll(".tableColumn output").forEach(column => {
+                column.addEventListener("dragover", event => {
+                    event.preventDefault();
+                });
+                column.addEventListener("drop", event => {
+                    event.preventDefault();
+                    moveTask(event.dataTransfer.getData("id"), event.target.closest(".tableColumn").id.slice(6))
+                });
+            });
             document.querySelectorAll(".taskTitle").forEach(element => {
                 element.addEventListener("click", event => {
                     editTaskTitle(event.target.getAttribute('data-taskid'));
@@ -106,6 +115,11 @@ function getTableData(tableId) {
                     editTaskLevel(event.target.getAttribute('data-taskid'));
                 });
             });
+            document.querySelectorAll(`article[draggable="true"]`).forEach(element => {
+                element.addEventListener("dragstart", event => {
+                    event.dataTransfer.setData("id", event.target.firstElementChild.getAttribute("data-taskid"));
+                });
+            });
         });
     });
 }
@@ -114,13 +128,39 @@ function generateTasksHtml(tasks) {
     let tasksHTML = "";
     tasks.forEach(task => {
         tasksHTML += `
-            <article>
+            <article draggable="true">
                 <div class="taskTitle" data-taskid="${task.id}">${task.title}</div>
                 <div class="taskLevel" data-taskid="${task.id}">${task.level}</div>
             </article>
             `;
     });
     return tasksHTML;
+}
+
+function moveTask(taskId, columnNumber) {
+    if (isNaN(taskId) || isNaN(columnNumber)) {
+        return;
+    }
+    let taskNode = document.querySelector(`.taskTitle[data-taskid="${taskId}"]`).parentElement;
+    let rollbackOutput = taskNode.parentElement;
+    if (taskNode.closest(".tableColumn").id === `column${columnNumber}`) {
+        return;
+    }
+
+    document.querySelector(`#column${columnNumber} output`).appendChild(taskNode);
+    fetch("/moveTask", {
+        method: "POST",
+        body: JSON.stringify({
+            taskId: taskId,
+            columnNumber: columnNumber
+        })
+    }).then(response => {
+        if (response.status !== 204) {
+            alert("Wystąpił bład");
+            rollbackOutput.appendChild(taskNode);
+            return;
+        }
+    });
 }
 
 function editTaskTitle(taskId) {
@@ -237,6 +277,7 @@ function addNewTask(tableId) {
         }
         response.json().then(data => {
             let newTaskElement = document.createElement("article");
+            newTaskElement.setAttribute("draggable", true);
 
             let newTaskTitleElement = document.createElement("div");
             newTaskTitleElement.setAttribute("class", "taskTitle")
