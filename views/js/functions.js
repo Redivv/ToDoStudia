@@ -118,6 +118,23 @@ function getTableData(tableId) {
             document.querySelectorAll(`article[draggable="true"]`).forEach(element => {
                 element.addEventListener("dragstart", event => {
                     event.dataTransfer.setData("id", event.target.firstElementChild.getAttribute("data-taskid"));
+                    document.querySelector(".sidebar>footer").innerHTML = `
+                    <div id="deleteTaskField">
+                        Upuść by usunąć
+                    </div>`;
+                    document.getElementById("deleteTaskField").addEventListener("dragover", event => {
+                        event.preventDefault();
+                    });
+                    document.getElementById("deleteTaskField").addEventListener("drop", event => {
+                        event.preventDefault();
+                        deleteTask(event.dataTransfer.getData("id"));
+                    });
+                });
+                element.addEventListener("dragend", () => {
+                    document.querySelector(".sidebar>footer").innerHTML = `
+                    <div id="addTableButton">Dodaj Tablicę</div>
+                    <div>Wyloguj</div>`;
+                    document.getElementById('addTableButton').addEventListener("click", addNewTable);
                 });
             });
         });
@@ -163,9 +180,28 @@ function moveTask(taskId, columnNumber) {
     });
 }
 
+function deleteTask(taskId) {
+    if (isNaN(taskId)) {
+        return;
+    }
+    let taskNode = document.querySelector(`.taskTitle[data-taskid="${taskId}"]`).parentElement;
+    taskNode.className = "d-none";
+
+    fetch(`/deleteTask?taskId=${taskId}`, {
+        method: "POST"
+    }).then(response => {
+        if (response.status !== 204) {
+            alert("Wystąpił bład");
+            taskNode.className = "";
+            return;
+        }
+        taskNode.remove();
+    });
+}
+
 function editTaskTitle(taskId) {
     let newTaskTitle = prompt("Podaj nowy tytuł zadania.").trim();
-    if (newTaskTitle !== "") {
+    if (newTaskTitle === "") {
         return;
     }
     fetch(`/editTaskName?taskId=${taskId}`, {
@@ -280,18 +316,47 @@ function addNewTask(tableId) {
             newTaskElement.setAttribute("draggable", true);
 
             let newTaskTitleElement = document.createElement("div");
-            newTaskTitleElement.setAttribute("class", "taskTitle")
+            newTaskTitleElement.setAttribute("class", "taskTitle");
+            newTaskTitleElement.setAttribute("data-taskid", data.id);
             newTaskTitleElement.appendChild(
                 document.createTextNode(data.title)
             )
+            newTaskTitleElement.addEventListener("click", event => {
+                editTaskTitle(event.target.getAttribute('data-taskid'));
+            });
             newTaskElement.appendChild(newTaskTitleElement);
 
             let newTaskLevelElement = document.createElement("div");
             newTaskLevelElement.setAttribute("class", "taskLevel")
+            newTaskLevelElement.setAttribute("data-taskid", data.id);
             newTaskLevelElement.appendChild(
                 document.createTextNode(data.level)
-            )
+            );
+            newTaskLevelElement.addEventListener("click", event => {
+                editTaskLevel(event.target.getAttribute('data-taskid'));
+            });
+
             newTaskElement.appendChild(newTaskLevelElement);
+            newTaskElement.addEventListener("dragstart", event => {
+                event.dataTransfer.setData("id", event.target.firstElementChild.getAttribute("data-taskid"));
+                document.querySelector(".sidebar>footer").innerHTML = `
+                <div id="deleteTaskField">
+                    Upuść by usunąć
+                </div>`;
+                document.getElementById("deleteTaskField").addEventListener("dragover", event => {
+                    event.preventDefault();
+                });
+                document.getElementById("deleteTaskField").addEventListener("drop", event => {
+                    event.preventDefault();
+                    deleteTask(event.dataTransfer.getData("id"));
+                });
+            });
+            newTaskElement.addEventListener("dragend", () => {
+                document.querySelector(".sidebar>footer").innerHTML = `
+                <div id="addTableButton">Dodaj Tablicę</div>
+                <div>Wyloguj</div>`;
+                document.getElementById('addTableButton').addEventListener("click", addNewTable);
+            });
 
             document.querySelector("#column1 output").appendChild(newTaskElement);
         });

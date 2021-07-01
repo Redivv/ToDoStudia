@@ -55,6 +55,10 @@ switch ($request) {
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/moveTask.php';
       break;
+   case '/deleteTask':
+      require __DIR__ . '/src/guards/authGuard.php';
+      require __DIR__ . '/src/deleteTask.php';
+      break;
    case '/deleteTable':
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/deleteTable.php';
@@ -62,9 +66,6 @@ switch ($request) {
    case '/editTable':
       require __DIR__ . '/src/guards/authGuard.php';
       require __DIR__ . '/src/editTable.php';
-      break;
-   case '/info':
-      echo phpinfo();
       break;
    default:
       http_response_code(404);

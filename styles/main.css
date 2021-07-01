@@ -66,19 +66,29 @@ output {
     margin-bottom: 3.4vh;
 }
 
-.sidebar footer div {
+.sidebar footer * {
     padding: 5px;
+    display: block;
+    text-decoration: none;
+    color: black;
 }
 
-.sidebar footer div:hover {
+.sidebar footer *:hover {
     cursor: pointer;
     background-color: crimson;
     color: white;
     border-color: black;
 }
 
-.sidebar footer div:first-child {
+.sidebar footer div {
     border-bottom: 1px solid;
+}
+
+.sidebar #deleteTaskField {
+    border: 0;
+    padding: 10% 0;
+    background-color: crimson;
+    color: white;
 }
 
 main {
@@ -187,4 +197,8 @@ main>.lds-circle {
     background-color: crimson;
     color: white;
     border-color: black;
+}
+
+.d-none{
+    display: none !important;
 }
