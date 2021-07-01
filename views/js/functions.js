@@ -133,7 +133,7 @@ function getTableData(tableId) {
                 element.addEventListener("dragend", () => {
                     document.querySelector(".sidebar>footer").innerHTML = `
                     <div id="addTableButton">Dodaj Tablicę</div>
-                    <div>Wyloguj</div>`;
+                    <a href="/logout">Wyloguj</a>`;
                     document.getElementById('addTableButton').addEventListener("click", addNewTable);
                 });
             });
@@ -354,7 +354,7 @@ function addNewTask(tableId) {
             newTaskElement.addEventListener("dragend", () => {
                 document.querySelector(".sidebar>footer").innerHTML = `
                 <div id="addTableButton">Dodaj Tablicę</div>
-                <div>Wyloguj</div>`;
+                <a href="/logout">Wyloguj</a>`;
                 document.getElementById('addTableButton').addEventListener("click", addNewTable);
             });
 
