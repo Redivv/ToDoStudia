@@ -4,7 +4,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql:/docker-entrypoint-initdb.d
-    restart: always
     ports:
       - 3306:3306
     environment:
@@ -25,7 +24,6 @@ services:
       - .:/var/www/html
     ports:
       - 80:80
-    restart: always
     networks:
       vpcbr:
         ipv4_address: 10.20.0.2
