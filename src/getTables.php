@@ -1,6 +1,5 @@
 <?php
 
-$db = new PDO("mysql:dbname=todo", 'todo', 'admin');
 $stmt = $db->prepare("SELECT id, name FROM tables WHERE user_id = ?");
 $stmt->execute([
     $_SESSION['user_id']

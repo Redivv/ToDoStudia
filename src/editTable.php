@@ -7,7 +7,7 @@ if (empty($json) || !$_GET['tableId']) {
 }
 
 
-$db = new PDO("mysql:dbname=todo", 'todo', 'admin');
+
 $stmt = $db->prepare("UPDATE tables SET name = ? WHERE id = ? AND user_id = ?");
 $newTableName = json_decode($json);
 $stmt->execute([

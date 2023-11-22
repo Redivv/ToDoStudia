@@ -1,0 +1,75 @@
+namespace: Tests
+support_namespace: Support
+# suite config
+suites:
+  acceptance:
+    actor: AcceptanceTester
+    path: ./acceptance
+    modules:
+      enabled:
+        - Tests\Support\Helper\LoginHelper
+        - Tests\Support\Helper\TaskTableHelper
+        - Tests\Support\Helper\TaskHelper
+        - WebDriver:
+            url: http://php
+            browser: chrome
+            host: selenium
+            clear_cookies: true
+            restart: true
+            capabilities:
+              acceptInsecureCerts: true
+              enableVerboseLogging: true
+              chromeOptions:
+                args: [ 'no-sandbox' ]
+        - AMQP:
+            host: 'rabbitmq'
+            port: '5672'
+            username: 'todo'
+            password: 'todo'
+            vhost: '/'
+            cleanup: true
+            queues: [ 'task_cancelled', 'task_created' ]
+        - Db:
+            dsn: 'mysql:host=db;dbname=todo'
+            user: 'todo'
+            cleanup: true
+            populate: true
+            password: 'admin'
+            dump:
+              - 'tests/_data/dump.sql'
+  api:
+    actor: ApiTester
+    path: ./api
+    modules:
+      enabled:
+        - AMQP:
+            host: 'rabbitmq'
+            port: '5672'
+            username: 'todo'
+            password: 'todo'
+            vhost: '/'
+            cleanup: true
+            queues: [ 'task_cancelled', 'task_created' ]
+        - Db:
+            dsn: 'mysql:host=db;dbname=todo'
+            user: 'todo'
+            cleanup: true
+            populate: true
+            password: 'admin'
+            dump:
+              - 'tests/_data/dump.sql'
+        - REST:
+            depends: PhpBrowser
+            url: 'http://php'
+
+# additional paths
+paths:
+  tests: tests
+  output: tests/_output
+  data: tests/Support/Data
+  support: tests/Support
+  envs: tests/_envs
+
+settings:
+  shuffle: false
+  lint: true

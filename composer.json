@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php-amqplib/php-amqplib": "3.6"
+    },
+    "require-dev": {
+        "codeception/codeception": "^5.0",
+        "codeception/module-webdriver": "^4.0",
+        "codeception/module-db": "^3.1",
+        "codeception/module-amqp": "^3.0",
+        "codeception/module-rest": "^3.3",
+        "codeception/module-phpbrowser": "^3.0"
+    }
+}

@@ -5,7 +5,7 @@ if (!$_GET['tableId']) {
     exit;
 }
 
-$db = new PDO("mysql:dbname=todo", 'todo', 'admin');
+
 $stmt = $db->prepare("DELETE FROM tables WHERE id = ? AND user_id = ?");
 $stmt->execute([
     $_GET['tableId'],

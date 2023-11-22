@@ -1,0 +1,55 @@
+services:
+  db:
+    image: mysql
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=todo
+      - MYSQL_USER=todo
+      - MYSQL_PASSWORD=admin
+    expose:
+      - 3306
+    networks:
+      vpcbr:
+        ipv4_address: 10.20.0.4
+  php:
+    build: .
+    environment:
+      - PHP_IDE_CONFIG=serverName=devDay.todo
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 80:80
+    restart: always
+    networks:
+      vpcbr:
+        ipv4_address: 10.20.0.2
+  rabbitmq:
+    image: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=todo
+      - RABBITMQ_DEFAULT_PASS=todo
+    logging:
+      driver: none
+    networks:
+      vpcbr:
+        ipv4_address: 10.20.0.3
+  selenium:
+    image: selenium/standalone-chrome-debug
+    networks:
+      vpcbr:
+        ipv4_address: 10.20.0.5
+volumes:
+  db_data:
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/16
+          gateway: 10.20.0.1

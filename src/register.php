@@ -6,7 +6,7 @@ if (!isset($_POST['username']) && !isset($_POST['password'])) {
    exit;
 }
 
-$db = new PDO("mysql:dbname=todo", 'todo', 'admin');
+
 $stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
 $stmt->execute([
    $_POST['username']
