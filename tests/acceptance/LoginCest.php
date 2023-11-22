@@ -7,17 +7,6 @@ use Tests\Support\Data\LoginConst;
 
 class LoginCest
 {
-    /**
-     * WIDZENIE YUP
-     * KLIKANIE YUP
-     * BAZA
-     * RABBIT
-     * PRZESUWANIE
-     * PROVIDER
-     * HELPER YUP
-     * API
-     */
-
     public function seeLoginForm(AcceptanceTester $I): void
     {
         $I->wantTo('Test login form UI');
